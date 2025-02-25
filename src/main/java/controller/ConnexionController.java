@@ -6,8 +6,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import repository.UtilisateurRepository;
 
-public class Connexion {
+public class ConnexionController {
+
+    private UtilisateurRepository utilisateurRepository;
 
     @FXML
     private ResourceBundle resources;
@@ -21,9 +24,13 @@ public class Connexion {
     @FXML
     private PasswordField mdp;
 
+    public ConnexionController() {
+        this.utilisateurRepository = new UtilisateurRepository();
+    }
+
     @FXML
     void connexion(ActionEvent event) {
-
+        this.utilisateurRepository.connect(email.getText(), mdp.getText());
     }
 
     @FXML
