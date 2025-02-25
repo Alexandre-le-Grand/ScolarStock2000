@@ -7,6 +7,7 @@ import java.util.List;
 
 import services.bdd.*;
 import services.error.ExceptionStack;
+import services.security.Security;
 
 public class UtilisateurRepository {
 
@@ -32,7 +33,7 @@ public class UtilisateurRepository {
             query.setString(1, utilisateur.getNom());
             query.setString(2, utilisateur.getPrenom());
             query.setString(3, utilisateur.getEmail());
-            query.setString(4, utilisateur.getMot_de_passe());
+            query.setString(4, Security.hash(utilisateur.getMot_de_passe()));
             query.setString(5, utilisateur.getRole().toString());
             query.executeUpdate();
             ResultSet generatedKeys = query.getGeneratedKeys();
@@ -40,8 +41,8 @@ public class UtilisateurRepository {
                 utilisateur.setId_utilisateur(generatedKeys.getInt(1));
             }
         } catch (SQLException e) {
-            //throw new RuntimeException(e);
-            return e;
+            throw new RuntimeException(e);
+            //return e;
         }
         return null;
     }
@@ -188,6 +189,42 @@ public class UtilisateurRepository {
             ExceptionStack.exception = e;
         }
         return false;
+    }
+
+    //------CUSTOM QUERIES------
+
+    public Utilisateur connect(String email, String mot_de_passe) {
+        String sql = "SELECT mot_de_passe FROM Utilisateur WHERE email = ? ";
+        try {
+            PreparedStatement query = bdd.prepareStatement(sql);
+            query.setString(1, email);
+            ResultSet resultSet = query.executeQuery();
+            if (resultSet.next()) {
+                String salt = resultSet.getString("mot_de_passe");
+                sql = "SELECT * FROM Utilisateur WHERE email = ? AND mot_de_passe = ?";
+                query = bdd.prepareStatement(sql);
+                query.setString(1, email);
+                query.setString(2, Security.hash(mot_de_passe, salt));
+                resultSet = query.executeQuery();
+                if (resultSet.next()) {
+                    return new Utilisateur(
+                            resultSet.getInt("id_utilisateur"),
+                            resultSet.getString("nom"),
+                            resultSet.getString("prenom"),
+                            resultSet.getString("email"),
+                            resultSet.getString("mot_de_passe"),
+                            Utilisateur.Role.valueOf(resultSet.getString("role"))
+                    );
+                }
+                else {
+                    ExceptionStack.exception = new Exception("Mot de passe incorrect");
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            ExceptionStack.exception = e;
+        }
+        return null;
     }
 }
 
