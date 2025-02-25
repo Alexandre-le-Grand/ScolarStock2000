@@ -4,6 +4,7 @@ import jakarta.mail.Authenticator;
 import jakarta.mail.MessagingException;
 import jakarta.mail.PasswordAuthentication;
 import jakarta.mail.Session;
+import services.env.Env;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
