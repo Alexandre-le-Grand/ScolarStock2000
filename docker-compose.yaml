@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mariadb:latest
+    container_name: db-ScolarStock2000
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3309:3306"
+    restart: always
+
+volumes:
+  db_data:
