@@ -10,9 +10,11 @@ public class Utilisateur {
     private Role role;
 
     public enum Role {
+        Default,
         Secretaire,
         Professeur,
-        Gestionnaire_de_stock
+        Gestionnaire_de_stock,
+        Admin
     }
 
 
