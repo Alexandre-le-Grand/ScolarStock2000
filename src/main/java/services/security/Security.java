@@ -1,5 +1,7 @@
 package services.security;
 
+import services.env.Env;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -7,6 +9,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
 public class Security {
@@ -38,5 +41,41 @@ public class Security {
         return  decrypt(value, defaultKey);
     }
     public static void setDefaultKey(String defaultKey) {Security.defaultKey = defaultKey;}
+    private static String generateSalt() {
+        SecureRandom secureRandom = new SecureRandom();
+        byte[] salt = new byte[8];
+        secureRandom.nextBytes(salt);
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : salt) {hexString.append(String.format("%02x", b));}
+        return hexString.toString();
+    }
+
+    public static String hash(String value) {
+        try {
+            String salt = generateSalt();
+            System.out.println(salt);
+            byte[] hash = java.security.MessageDigest.getInstance("SHA-256").digest((value + salt).getBytes());
+            return Base64.getEncoder().encodeToString(hash)+salt;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static String hash(String value, String salt) {
+        try {
+            byte[] hash = java.security.MessageDigest.getInstance("SHA-256").digest((value + salt).getBytes());
+            return Base64.getEncoder().encodeToString(hash)+salt;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static String getSaltOfHash(String hash) {
+        return hash.substring(hash.length()-(Integer.parseInt(Env.dotenv.get("SALT_SIZE"))*2));
+    }
+    public static boolean textEqualHash(String text, String hash) {
+        String salt = getSaltOfHash(hash);
+        return hash.equals(hash(text, salt));
+    }
+
+
 }
 
