@@ -41,8 +41,8 @@ public class UtilisateurRepository {
                 utilisateur.setId_utilisateur(generatedKeys.getInt(1));
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-            //return e;
+            //throw new RuntimeException(e);
+            return e;
         }
         return null;
     }

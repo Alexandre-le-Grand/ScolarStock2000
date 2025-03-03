@@ -28,8 +28,18 @@ public class InscriptionController {
                 if (mot_de_passe.getText().length() >= 6) {
                     model.Utilisateur utilisateur = new model.Utilisateur(nom.getText(), prenom.getText(), email.getText(), mot_de_passe.getText(), Utilisateur.Role.Default);
                     repository.UtilisateurRepository utilisateurRepository = new repository.UtilisateurRepository();
-                    utilisateurRepository.create(utilisateur);
-                    Main.changeScene("DefaultPannel", new DefaultPannelController(utilisateur), "Bienvenue "+utilisateur.getPrenom()+"!!");
+                    Exception exception = utilisateurRepository.create(utilisateur);
+                    if (exception!=null) {
+                        if (exception.getMessage().contains("email") && exception.getMessage().contains("Duplicate entry")) {
+                            System.out.println("Cette adresse mail est déjà utilisée"); //todo mettre un label error et modifier le texte pour afficher ce qui ne va pas
+                        }
+                        else {
+                            System.out.println(exception.getMessage());
+                        }
+                    }
+                    else {
+                        Main.changeScene("DefaultPannel", new DefaultPannelController(utilisateur), "Bienvenue "+utilisateur.getPrenom()+"!!");
+                    }
                 }
                 else {
                     System.out.println("Le mot de passe doit contenir au moins 6 caractères"); //todo mettre un label error et modifier le texte pour afficher ce qui ne va pas
