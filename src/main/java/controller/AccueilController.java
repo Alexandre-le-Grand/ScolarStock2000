@@ -7,6 +7,7 @@ import application.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
+import model.Utilisateur;
 
 public class AccueilController {
 
@@ -18,15 +19,13 @@ public class AccueilController {
     @FXML
     private URL location;
 
-    AccueilController() {}
+    public AccueilController() {}
 
     AccueilController(Utilisateur utilisateur) {
         this.utilisateur = utilisateur;
     }
 
-    initialize() {
-        
-    }
+
 
     @FXML
     void connexion(ActionEvent event) {

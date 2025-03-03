@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Utilisateur (
     prenom VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
-    role ENUM('Secretaire', 'Professeur', 'Gestionnaire de stock') NOT NULL
+    role ENUM('Default', 'Secretaire', 'Professeur', 'Gestionnaire_de_stock', 'Admin') NOT NULL
 );
 
 -- Creation de la table Etudiant
@@ -88,10 +88,12 @@ CREATE TABLE IF NOT EXISTS Demande_Fourniture (
 );
 
 -- Creation de la table Connexion (pour enregistrer les connexions des utilisateurs)
-CREATE TABLE IF NOT EXISTS Connexion (
+CREATE TABLE Connexion (
     id_connexion INT AUTO_INCREMENT PRIMARY KEY,
     date_heure_connexion DATETIME NOT NULL,
-    ref_utilisateur INT
+    ref_utilisateur INT,
+    valide BOOLEAN NOT NULL DEFAULT 0,
+    message VARCHAR(255)
 );
 
 -- Creation de la table Historique_Action (pour enregistrer les actions des utilisateurs)

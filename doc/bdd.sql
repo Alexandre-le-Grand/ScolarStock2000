@@ -94,7 +94,7 @@ CREATE TABLE Utilisateur (
     prenom VARCHAR(100) NOT NULL,
     email VARCHAR(150) UNIQUE NOT NULL,
     mot_de_passe VARCHAR(255) NOT NULL,
-    role ENUM('Secretaire', 'Professeur', 'Gestionnaire de stock') NOT NULL
+    role ENUM('Default', 'Secretaire', 'Professeur', 'Gestionnaire_de_stock', 'Admin') NOT NULL
 );
 
 -- Creation de la table Etudiant
@@ -177,7 +177,9 @@ CREATE TABLE Demande_Fourniture (
 CREATE TABLE Connexion (
     id_connexion INT AUTO_INCREMENT PRIMARY KEY,
     date_heure_connexion DATETIME NOT NULL,
-    ref_utilisateur INT
+    ref_utilisateur INT,
+    valide BOOLEAN NOT NULL DEFAULT 0,
+    message VARCHAR(255)
 );
 
 -- Creation de la table Historique_Action (pour enregistrer les actions des utilisateurs)
@@ -223,3 +225,18 @@ ALTER TABLE Connexion
 -- Cles etrangeres pour la table Historique_Action
 ALTER TABLE Historique_Action
     ADD CONSTRAINT fk_action_utilisateur FOREIGN KEY (ref_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE;
+
+
+CREATE TRIGGER tr_connexion_creation
+    AFTER INSERT ON Utilisateur
+    FOR EACH ROW
+BEGIN
+    INSERT INTO Connexion (date_heure_connexion, ref_utilisateur, valide, message) VALUES (NOW(), NEW.id_utilisateur, TRUE, CONCAT('Création du compte ', NEW.email));
+END;
+
+CREATE TRIGGER tr_connexion_suppression
+    AFTER DELETE ON Utilisateur
+    FOR EACH ROW
+BEGIN
+    INSERT INTO Connexion (date_heure_connexion, ref_utilisateur, valide, message) VALUES (NOW(), OLD.id_utilisateur, FALSE, CONCAT('Suppression du compte ', OLD.email));
+END;

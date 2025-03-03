@@ -200,7 +200,7 @@ public class UtilisateurRepository {
             query.setString(1, email);
             ResultSet resultSet = query.executeQuery();
             if (resultSet.next()) {
-                String salt = resultSet.getString("mot_de_passe");
+                String salt = Security.getSaltOfHash(resultSet.getString("mot_de_passe"));
                 sql = "SELECT * FROM Utilisateur WHERE email = ? AND mot_de_passe = ?";
                 query = bdd.prepareStatement(sql);
                 query.setString(1, email);
@@ -218,12 +218,14 @@ public class UtilisateurRepository {
                 }
                 else {
                     ExceptionStack.exception = new Exception("Mot de passe incorrect");
+                    System.out.println("merde1");
                     return null;
                 }
             }
         } catch (SQLException e) {
             ExceptionStack.exception = e;
         }
+        System.out.println("merde2");
         return null;
     }
 }
