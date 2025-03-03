@@ -2,10 +2,13 @@ package controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import application.Main;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import model.Utilisateur;
 import repository.UtilisateurRepository;
 
 public class ConnexionController {
@@ -30,7 +33,13 @@ public class ConnexionController {
 
     @FXML
     void connexion(ActionEvent event) {
-        this.utilisateurRepository.connect(email.getText(), mdp.getText());
+        Utilisateur utilisateur = this.utilisateurRepository.connect(email.getText(), mdp.getText());
+        if (utilisateur != null) {
+            System.out.println("Bonjour " + utilisateur.getNom() + " " + utilisateur.getPrenom());
+            Main.changeScene("DefaultPannel", new DefaultPannelController(utilisateur), "Bienvenue "+utilisateur.getPrenom()+"!!");
+        } else {
+            System.out.println("Erreur de connexion");
+        }
     }
 
     @FXML
