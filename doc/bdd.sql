@@ -226,17 +226,3 @@ ALTER TABLE Connexion
 ALTER TABLE Historique_Action
     ADD CONSTRAINT fk_action_utilisateur FOREIGN KEY (ref_utilisateur) REFERENCES Utilisateur(id_utilisateur) ON DELETE CASCADE;
 
-
-CREATE TRIGGER tr_connexion_creation
-    AFTER INSERT ON Utilisateur
-    FOR EACH ROW
-BEGIN
-    INSERT INTO Connexion (date_heure_connexion, ref_utilisateur, valide, message) VALUES (NOW(), NEW.id_utilisateur, TRUE, CONCAT('Création du compte ', NEW.email));
-END;
-
-CREATE TRIGGER tr_connexion_suppression
-    AFTER DELETE ON Utilisateur
-    FOR EACH ROW
-BEGIN
-    INSERT INTO Connexion (date_heure_connexion, ref_utilisateur, valide, message) VALUES (NOW(), OLD.id_utilisateur, FALSE, CONCAT('Suppression du compte ', OLD.email));
-END;
