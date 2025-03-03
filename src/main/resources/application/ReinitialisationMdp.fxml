@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="313.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label text="Réinitialisation">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <Label text="mot de passe">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Label>
+      <Pane minHeight="50.0" prefHeight="50.0" prefWidth="313.0" />
+      <Pane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="code" layoutX="59.0" layoutY="-10.0" prefHeight="35.0" prefWidth="196.0" promptText="Code" style="-fx-background-color: transparent; -fx-border-color: transparent transparent #0000FF transparent; -fx-border-width: 2px; -fx-padding: 20px 10px 0px 10px;">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <font>
+                  <Font name="Calibri" size="20.0" />
+               </font>
+            </TextField>
+         </children></Pane>
+      <Pane prefHeight="200.0" prefWidth="314.0">
+         <children>
+            <PasswordField fx:id="nouveau_mdp" layoutX="59.0" prefHeight="35.0" prefWidth="196.0" promptText="Nouveau mot de passe" style="-fx-background-color: transparent; -fx-border-color: transparent transparent #0000FF transparent; -fx-border-width: 2px; -fx-padding: 20px 10px 0px 10px;">
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <font>
+                  <Font name="Calibri" size="20.0" />
+               </font>
+            </PasswordField>
+         </children></Pane>
+      <Pane prefHeight="298.0" prefWidth="314.0">
+         <children>
+            <Button layoutX="122.0" layoutY="91.0" mnemonicParsing="false" onAction="#mdpOublie" prefHeight="26.0" prefWidth="82.0" text="modifier" />
+         </children>
+      </Pane>
+   </children>
+</VBox>

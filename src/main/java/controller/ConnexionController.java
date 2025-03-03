@@ -44,7 +44,14 @@ public class ConnexionController {
 
     @FXML
     void mdpOublie(ActionEvent event) {
-
+        if (email.getText().isEmpty()) {
+            System.out.println("Veuillez entrer votre e-mail");
+        }
+        else {
+            System.out.println("Un mail vous a été envoyé");
+            Main.changeScene("ReinitialisationMdp", new ReinitialisationMdpController(email.getText()), "Reinitialisation de mot de passe");
+        }
+        
     }
 
     @FXML

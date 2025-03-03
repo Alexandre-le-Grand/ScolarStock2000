@@ -76,6 +76,16 @@ public class Security {
         return hash.equals(hash(text, salt));
     }
 
+    public static String generateRandomCode(int length) {
+    String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    SecureRandom random = new SecureRandom();
+    StringBuilder code = new StringBuilder(length);
+    for (int i = 0; i < length; i++) {
+        code.append(characters.charAt(random.nextInt(characters.length())));
+    }
+    return code.toString();
+}
+
 
 }
 

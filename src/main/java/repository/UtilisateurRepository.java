@@ -228,6 +228,21 @@ public class UtilisateurRepository {
         System.out.println("merde2");
         return null;
     }
+        
+    public Integer emailExiste(String email) {
+        String sql = "SELECT id_utilisateur FROM Utilisateur WHERE email = ? ";
+        try {
+            PreparedStatement query = bdd.prepareStatement(sql);
+            query.setString(1, email);
+            ResultSet resultSet = query.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("id_utilisateur");
+            }
+        } catch (SQLException e) {
+            ExceptionStack.exception = e;
+        }
+        return null;
+    }
 }
 
 
